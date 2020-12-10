@@ -3,7 +3,7 @@
 ; If unspecified, the application will pick the first one it finds.
 ; $ polybar -m | cut -d ':' -f 1
 ; $ xrandr -q | grep " connected" | cut -d ' ' -f1
-monitor = eDP-1
+monitor = eDP1
 
 ; Use the specified monitor as a fallback if the main one is not found.
 ; monitor-fallback =
@@ -20,7 +20,7 @@ monitor = eDP-1
 override-redirect = true
 
 ; Put the bar at the bottom of the screen
-bottom = true
+bottom = false
 
 ; Prefer fixed center position for the `modules-center` block
 ; When false, the center position will be based on the size of the other blocks.
@@ -29,15 +29,15 @@ fixed-center = true
 ; Dimension defined as pixel value (e.g. 35) or percentage (e.g. 50%),
 ; the percentage can optionally be extended with a pixel offset like so:
 ; 50%:-10, this will result in a width or height of 50% minus 10 pixels
-width = 95%
+width = 100%
 height = 22
 
 ; Offset defined as pixel value (e.g. 35) or percentage (e.g. 50%)
 ; the percentage can optionally be extended with a pixel offset like so:
 ; 50%:-10, this will result in an offset in the x or y direction
 ; of 50% minus 10 pixels
-offset-x = 2.5%
-offset-y = 13
+offset-x = 0
+offset-y = 0
 
 ; Background ARGB color (e.g. #f00, #ff992a, #ddff1023)
 background = #2E3440
@@ -55,7 +55,7 @@ foreground = #D8DEE9
 ; pseudo-transparency or use a compositor like compton.
 ; Individual top/bottom values can be defined using:
 ;   radius-{top,bottom}
-
+; radius = 8
 ; Under-/overline pixel size and argb color
 ; Individual values can be defined using:
 ;   {overline,underline}-size
@@ -79,12 +79,12 @@ line-color = #fff
 ; Number of spaces to add at the beginning/end of the bar
 ; Individual side values can be defined using:
 ;   padding-{left,right}
-padding-right = 3
+padding-right = 1
 
 ; Number of spaces to add before/after each module
 ; Individual side values can be defined using:
 ;   module-margin-{left,right}
-module-margin = 1
+module-margin = 2
 
 ; Fonts are defined using <font-name>;<vertical-offset>
 ; Font names are specified using a fontconfig pattern.
@@ -92,10 +92,13 @@ module-margin = 1
 ;   font-1 = MaterialIcons:size=10
 ;   font-2 = Termsynu:size=8;-1
 ;   font-3 = FontAwesome:size=10
+;   font-0 = Roboto:size=8;3
 ; See the Fonts wiki page for more details
-font-0 = IBM Plex Mono:medium:size=9;3
+font-0 = NotoSans-Regular:size=8;2
 font-1 = FontAwesome5Free:style=Solid:size=8;3
 font-2 = unifont:size=10;3
+font-3 = FontAwesome5Brands:style=Solid:size=8;3
+font-4 = NotoColorEmoji:scale=12;3 
 
 ; Modules are added to one of the available blocks
 ;   modules-left = cpu ram
@@ -103,7 +106,7 @@ font-2 = unifont:size=10;3
 ;   modules-right = ipc clock
 modules-left = i3
 modules-center = date
-modules-right = battery sep memory sep cpu sep temperature sep
+modules-right = cpu memory battery
 
 ; The separator will be inserted between the output of each module
 separator =
@@ -138,7 +141,7 @@ tray-position = right
 tray-detached = false
 
 ; Tray icon max size
-tray-maxsize = 16
+tray-maxsize = 18
 
 ; DEPRECATED! Since 3.3.0 the tray always uses pseudo-transparency
 ; Enable pseudo transparency
@@ -157,7 +160,7 @@ tray-offset-x = 0
 tray-offset-y = 0
 
 ; Pad the sides of each tray icon
-tray-padding = 0
+tray-padding = 8
 
 ; Scale factor for tray clients
 tray-scale = 1.0
@@ -188,6 +191,7 @@ enable-ipc = false
 ; there's no matching module handler found.
 [module/i3]
 type = internal/i3
+
 
 ; Only show workspaces defined on the same output as the bar
 ;
@@ -227,16 +231,36 @@ reverse-scroll = false
 ; Example: code;♚ will apply the icon to all workspaces
 ; containing 'code' in the label
 ; Default: false
-fuzzy-match = true
 
-label-unfocused = %index%
+fuzzy-match = false
+ws-icon-default = ﱣ
+ws-icon-0 = 1;1
+ws-icon-1 = 2;2
+ws-icon-2 = 3;3
+ws-icon-3 = 4;4
+ws-icon-4 = 5;
+ws-icon-5 = 6;6
+ws-icon-6 = 7;7
+ws-icon-7 = 8;8
+ws-icon-8 = 9;9
+ws-icon-9 = 10;10
+
+
+label-unfocused = %icon%
 label-unfocused-padding = 2
 label-unfocused-foreground = #D8DEE9
 
-label-focused = %index%
+label-focused = %icon%
 label-focused-background = #4C566A
 label-focused-padding = 2
 label-focused-foreground = #D8DEE9
+
+
+[module/weather]
+type = custom/script
+interval = 10.0
+exec = curl -s "wttr.in/?format=1"
+format-padding = 0
 
 [module/date]
 type = internal/date
@@ -253,12 +277,12 @@ time = %H:%M
 
 ; if `date-alt` or `time-alt` is defined, clicking
 ; the module will toggle between formats
-date-alt = %A, %d %B %Y
-time-alt = %H:%M:%S
+date-alt = %d %B, week %U
+time-alt = %Y-%m-%d, week %U
 
-label = %date% %time%
+label = %time%
 label-font = 0
-label-foreground = #81a1c1
+label-foreground = #D8DEE9
 
 [module/wireless-network]
 type = internal/network
@@ -290,7 +314,7 @@ interval = 0.5
 
 label =  %percentage:2%%
 
-label-foreground = #D8DEE9
+label-foreground = #aaD8DEE9
 
 [module/memory]
 type = internal/memory
@@ -320,7 +344,7 @@ format = <label>
 
 label =  %gb_used%
 
-label-foreground = #D8DEE9
+label-foreground = #aaD8DEE9
 
 [module/temperature]
 type = internal/temperature
@@ -359,6 +383,27 @@ format = <label>
 label =  %temperature-c%
 
 label-foreground = #D8DEE9
+
+[module/title]
+type = internal/xwindow
+; Available tags:
+;   <label> (default)
+format = <label>
+format-background = #f00
+format-foreground = #000
+format-padding = 4
+
+; Available tokens:
+;   %title%
+; Default: %title%
+label = %title%
+label-maxlen = 50
+
+; Used instead of label when there is no window title
+; Available tokens:
+;   None
+label-empty = Empty
+label-empty-foreground = #707880
 
 [module/battery]
 type = internal/battery
@@ -463,7 +508,7 @@ animation-discharging-framerate = 500
 
 [module/decor-glyph]
 type = custom/text
-content-foreground = #4C566A
+content-foreground = #D8DEE9
 margin = 0
 
 [module/sep]
